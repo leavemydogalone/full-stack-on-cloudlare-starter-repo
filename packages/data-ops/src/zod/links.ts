@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// This accepts either an object with a default URL or optional other URL
 export const destinationsSchema = z.preprocess(
   (obj) => {
     if (typeof obj === "string") {
@@ -12,7 +13,7 @@ export const destinationsSchema = z.preprocess(
     .object({
       default: z.string().url(),
     })
-    .catchall(z.string().url()),
+    .catchall(z.string().url())
 );
 
 export type DestinationsSchemaType = z.infer<typeof destinationsSchema>;
@@ -52,7 +53,7 @@ export const durableObjectGeoClickSchama = z.object({
 });
 
 export const durableObjectGeoClickArraySchema = z.array(
-  durableObjectGeoClickSchama,
+  durableObjectGeoClickSchama
 );
 
 export type DurableObjectGeoClickSchemaType = z.infer<
