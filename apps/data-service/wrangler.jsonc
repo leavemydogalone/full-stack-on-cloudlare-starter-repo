@@ -18,12 +18,24 @@
 			"remote": true
 		}
 	],
-
 	"kv_namespaces": [
 		{
 			"binding": "CACHE",
 			"id": "f685c1c082194d46b27e123345518924",
 			"remote": true
 		}
-	]
+	],
+	"queues": {
+		"consumers": [
+			{
+				"queue": "smart-links-data-queue-stage"
+			}
+		],
+		"producers": [
+			{
+				"binding": "QUEUE",
+				"queue": "smart-links-data-queue-stage"
+			}
+		]
+	}
 }

@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { cloudflareInfoSchema } from '@repo/data-ops/zod-schema/links';
 import { getDestinationForCountry, getRoutingDestinations } from '@/helpers/route-ops';
+import { LinkClickMessageType } from '@repo/data-ops/zod-schema/queue';
 
 export const App = new Hono<{ Bindings: Env }>();
 
@@ -20,5 +21,21 @@ App.get('/:id', async (c) => {
 	const headers = cfHeader.data;
 	const destination = getDestinationForCountry(linkInfo, headers.country);
 
+	const queueMessage: LinkClickMessageType = {
+		type: 'LINK_CLICK',
+		data: {
+			id: id,
+			country: headers.country,
+			destination: destination,
+			accountId: linkInfo.accountId,
+			latitude: headers.latitude,
+			longitude: headers.longitude,
+			timestamp: new Date().toISOString(),
+		},
+	};
+
+	// waitUntil means we can redirect the user immediately (don't need to await)
+	// and the worker will complete the queue operation in the background
+	c.executionCtx.waitUntil(c.env.QUEUE.send(queueMessage));
 	return c.redirect(destination);
 });
