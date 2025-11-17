@@ -34,7 +34,7 @@ App.get('/:id', async (c) => {
 		},
 	};
 
-	// waitUntil means we can redirect the user immediately (don't need to await)
+	// waitUntil means we can redirect the user immediately (where awaiting would delay)
 	// and the worker will complete the queue operation in the background
 	c.executionCtx.waitUntil(c.env.QUEUE.send(queueMessage));
 	return c.redirect(destination);

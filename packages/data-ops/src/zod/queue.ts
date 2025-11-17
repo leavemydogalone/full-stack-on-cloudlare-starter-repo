@@ -20,6 +20,10 @@ export const LinkClickMessageSchema = BaseQueueMessageSchema.extend({
   }),
 });
 
+// Discriminated union of all queue message types,
+// meaning we can easily extend this in the future to include more queue message types,
+// by adding more schemas to the array.
+
 export const QueueMessageSchema = z.discriminatedUnion("type", [
   LinkClickMessageSchema,
 ]);
