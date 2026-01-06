@@ -2,6 +2,10 @@ import { generateObject } from 'ai';
 import { createWorkersAI } from 'workers-ai-provider';
 import { z } from 'zod';
 
+// Note to self for future: considers using different AI models and prompt tuning based on the situation
+// Some models may perform better or are quicker/more cost-effective for certain types of content or complexity levels
+// EXPERIMENT
+
 export async function aiDestinationChecker(env: Env, bodyText: string) {
 	const workersAi = createWorkersAI({ binding: env.AI });
 	// Currently workersAi does not have all the valid input types. Cast to any as a stop gap
