@@ -24,17 +24,25 @@
 			"remote": true
 		}
 	],
-	"r2_buckets": [
-		{
-			"binding": "BUCKET",
-			"bucket_name": "smart-links-eval-stage"
-		}
-	],
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "EVALUATION_SCHEDULER",
+				"class_name": "EvaluationScheduler"
+			}
+		]
+	},
 	"kv_namespaces": [
 		{
 			"binding": "CACHE",
 			"id": "f685c1c082194d46b27e123345518924",
 			"remote": true
+		}
+	],
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_classes": ["EvaluationScheduler"]
 		}
 	],
 	"queues": {
@@ -55,6 +63,12 @@
 			}
 		]
 	},
+	"r2_buckets": [
+		{
+			"binding": "BUCKET",
+			"bucket_name": "smart-links-eval-stage"
+		}
+	],
 	"workflows": [
 		{
 			"binding": "DESTINATION_EVALUATION_WORKFLOW",
