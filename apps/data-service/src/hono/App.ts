@@ -1,9 +1,16 @@
 import { Hono } from 'hono';
 import { cloudflareInfoSchema } from '@repo/data-ops/zod-schema/links';
-import { getDestinationForCountry, getRoutingDestinations } from '@/helpers/route-ops';
+import { captureLinkClickInBackground, getDestinationForCountry, getRoutingDestinations } from '@/helpers/route-ops';
 import { LinkClickMessageType } from '@repo/data-ops/zod-schema/queue';
 
 export const App = new Hono<{ Bindings: Env }>();
+
+App.get('/link-click/:account-id', async (c) => {
+	const accountId = c.req.param('account-id');
+	const doId = c.env.LINK_CLICK_TRACKER_OBJECT.idFromName(accountId);
+	const stub = c.env.LINK_CLICK_TRACKER_OBJECT.get(doId);
+	return await stub.fetch(c.req.raw);
+});
 
 App.get('/:id', async (c) => {
 	const id = c.req.param('id');
@@ -36,6 +43,6 @@ App.get('/:id', async (c) => {
 
 	// waitUntil means we can redirect the user immediately (where awaiting would delay)
 	// and the worker will complete the queue operation in the background
-	c.executionCtx.waitUntil(c.env.QUEUE.send(queueMessage));
+	c.executionCtx.waitUntil(captureLinkClickInBackground(c.env, queueMessage));
 	return c.redirect(destination);
 });
