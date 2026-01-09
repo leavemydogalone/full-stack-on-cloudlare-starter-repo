@@ -8,7 +8,7 @@ import {
 
 export const evaluationsTrpcRoutes = t.router({
   problematicDestinations: t.procedure.query(async ({ ctx }) => {
-    return await getNotAvailableEvaluations("testaccountid");
+    return await getNotAvailableEvaluations(ctx.userInfo.userId);
   }),
   recentEvaluations: t.procedure
     .input(
@@ -19,7 +19,7 @@ export const evaluationsTrpcRoutes = t.router({
         .optional()
     )
     .query(async ({ ctx }) => {
-      const evaluations = await getEvaluations("testaccountid");
+      const evaluations = await getEvaluations(ctx.userInfo.userId);
 
       const oldestCreatedAt =
         evaluations.length > 0
