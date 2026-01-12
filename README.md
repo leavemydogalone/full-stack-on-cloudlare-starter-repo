@@ -28,6 +28,12 @@ Conceptually, the system is split into:
 - Backend/Workers (`apps/data-service`): Hono-based Workers that accept events, run workflows, use Durable Objects for coordination, and call AI/renderer helpers to evaluate external destinations.
 - Shared packages (`packages/data-ops`): database schema, queries, migrations, and reusable helpers.
 
+## Architecture Overview
+
+- Frontend: React + Vite, uses `@repo/data-ops` for types/queries and communicates with the data-service via tRPC/Open API endpoints.
+- Data/service: Hono-based Cloudflare Worker with durable objects, scheduled evaluation workflows, and queue handlers.
+- Data layer: `packages/data-ops` contains Drizzle/Kysely helpers, migrations, and typed exports used across the monorepo.
+
 **Quick links**
 
 - Frontend app: `apps/user-application`
@@ -99,12 +105,6 @@ pnpm --filter data-service run stage:deploy
 - For the frontend, use the `stage:deploy` script in `apps/user-application` or manually run `wrangler deploy` from that package.
 
 Be sure your Cloudflare credentials and account details are configured for `wrangler` (see the Wrangler docs).
-
-## Architecture Overview
-
-- Frontend: React + Vite, uses `@repo/data-ops` for types/queries and communicates with the data-service via tRPC/Open API endpoints.
-- Data/service: Hono-based Cloudflare Worker with durable objects, scheduled evaluation workflows, and queue handlers.
-- Data layer: `packages/data-ops` contains Drizzle/Kysely helpers, migrations, and typed exports used across the monorepo.
 
 ## Useful files
 
