@@ -114,4 +114,4 @@ Be sure your Cloudflare credentials and account details are configured for `wran
 
 ## License
 
-This project is provided under the repository license. See `LICENSE` at the repo root.
+This project is provided under the repository license. See `LICENSE` at the repo root
