@@ -1,3 +1,5 @@
+https://user-application-production.niklasport88.workers.dev/
+
 # Full Stack on Cloudflare — Starter Repo
 
 Opinionated starter monorepo demonstrating a full-stack Cloudflare Workers application:
