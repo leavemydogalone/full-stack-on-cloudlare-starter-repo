@@ -11,10 +11,30 @@ export const App = new Hono<{
 }>();
 
 const getAuthInstance = (env: Env) => {
-  return getAuth({
-    clientId: env.GOOGLE_CLIENT_ID,
-    clientSecret: env.GOOGLE_CLIENT_SECRET,
-  });
+  return getAuth(
+    {
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    },
+    {
+      stripeWebhookSecret: "",
+      stripeApiKey: env.STRIPE_SECRET_KEY,
+      plans: [
+        {
+          name: "basic",
+          priceId: env.STRIPE_PRODUCT_BASIC,
+        },
+        {
+          name: "pro",
+          priceId: env.STRIPE_PRODUCT_PRO,
+        },
+        {
+          name: "enterprise",
+          priceId: env.STRIPE_PRODUCT_ENTERPRISE,
+        },
+      ],
+    }
+  );
 };
 
 const authMiddleware = createMiddleware(async (c, next) => {
@@ -47,10 +67,7 @@ App.all("/trpc/*", authMiddleware, (c) => {
 App.get("/click-socket", authMiddleware, async (c) => {
   const userId = c.get("userId");
   const headers = new Headers(c.req.raw.headers);
-  // Can change to organization-id if this becomes an org-level service
   headers.set("account-id", userId);
-  // NOTE: You can also add an API key to this header and implement
-  // API key based auth on the data-service
   const proxiedRequest = new Request(c.req.raw, { headers });
   return c.env.BACKEND_SERVICE.fetch(proxiedRequest);
 });
