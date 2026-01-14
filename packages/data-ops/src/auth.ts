@@ -40,7 +40,7 @@ export function createBetterAuth(
         stripeClient: new Stripe(
           stripeConfig?.stripeApiKey || process.env.STRIPE_KEY!,
           {
-            apiVersion: "2025-03-31.basil",
+            apiVersion: "2025-07-30.basil",
           }
         ),
         stripeWebhookSecret:
